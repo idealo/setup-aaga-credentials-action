@@ -6,6 +6,7 @@ interface AwsCreds {
   accessKeyId: string
   secretAccessKey: string
   sessionToken: string
+  region: string
 }
 
 async function run(): Promise<void> {
@@ -29,6 +30,9 @@ async function run(): Promise<void> {
 
   core.setSecret(creds.result!.sessionToken)
   core.exportVariable('AWS_SESSION_TOKEN', creds.result!.sessionToken)
+
+  core.exportVariable('AWS_DEFAULT_REGION', creds.result!.region)
+  core.exportVariable('AWS_REGION', creds.result!.region)
 }
 
 run()
