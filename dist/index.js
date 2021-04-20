@@ -45,7 +45,7 @@ function run() {
         const creds = yield client.create(core.getInput('endpoint'), null, {
             additionalHeaders: {
                 Authorization: `Bearer ${core.getInput('token')}`,
-                "github-repository": github.context.repo.repo,
+                "github-repository": `${github.context.repo.owner}/${github.context.repo.repo}`,
                 "github-run-id": github.context.runId,
                 "github-run-number": github.context.runNumber
             }
