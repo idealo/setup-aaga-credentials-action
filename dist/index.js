@@ -45,7 +45,8 @@ function run() {
         const creds = yield client.create(core.getInput('endpoint'), null, {
             additionalHeaders: {
                 Authorization: `Bearer ${core.getInput('token')}`,
-                "github-repository": `${github.context.repo.owner}/${github.context.repo.repo}`,
+                "github-repo-owner": github.context.repo.owner,
+                "github-repo-name": github.context.repo.repo,
                 "github-run-id": github.context.runId,
                 "github-run-number": github.context.runNumber
             }
@@ -56,6 +57,8 @@ function run() {
         core.exportVariable('AWS_SECRET_ACCESS_KEY', creds.result.secretAccessKey);
         core.setSecret(creds.result.sessionToken);
         core.exportVariable('AWS_SESSION_TOKEN', creds.result.sessionToken);
+        core.exportVariable('AWS_DEFAULT_REGION', creds.result.region);
+        core.exportVariable('AWS_REGION', creds.result.region);
     });
 }
 run();
