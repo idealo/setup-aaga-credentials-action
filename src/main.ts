@@ -14,7 +14,8 @@ async function run(): Promise<void> {
   const creds = await client.create<AwsCreds>(core.getInput('endpoint'), null, {
     additionalHeaders: {
       Authorization: `Bearer ${core.getInput('token')}`,
-      "github-repository": `${github.context.repo.owner}/${github.context.repo.repo}`,
+      "github-repo-owner": github.context.repo.owner,
+      "github-repo-name": github.context.repo.repo,
       "github-run-id": github.context.runId,
       "github-run-number": github.context.runNumber
     }
