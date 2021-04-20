@@ -39,26 +39,38 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__webpack_require__(2186));
 const github = __importStar(__webpack_require__(5438));
 const rm = __importStar(__webpack_require__(7405));
+function exportCreds(creds) {
+    core.setSecret(creds.accessKeyId);
+    core.exportVariable('AWS_ACCESS_KEY_ID', creds.accessKeyId);
+    core.setSecret(creds.secretAccessKey);
+    core.exportVariable('AWS_SECRET_ACCESS_KEY', creds.secretAccessKey);
+    core.setSecret(creds.sessionToken);
+    core.exportVariable('AWS_SESSION_TOKEN', creds.sessionToken);
+    core.exportVariable('AWS_DEFAULT_REGION', creds.region);
+    core.exportVariable('AWS_REGION', creds.region);
+}
 function run() {
     return __awaiter(this, void 0, void 0, function* () {
         const client = new rm.RestClient('actions');
-        const creds = yield client.create(core.getInput('endpoint'), null, {
-            additionalHeaders: {
-                Authorization: `Bearer ${core.getInput('token')}`,
-                "github-repo-owner": github.context.repo.owner,
-                "github-repo-name": github.context.repo.repo,
-                "github-run-id": github.context.runId,
-                "github-run-number": github.context.runNumber
+        try {
+            const creds = yield client.create(core.getInput('endpoint'), null, {
+                additionalHeaders: {
+                    Authorization: `Bearer ${core.getInput('token')}`,
+                    "github-repo-owner": github.context.repo.owner,
+                    "github-repo-name": github.context.repo.repo,
+                    "github-run-id": github.context.runId,
+                    "github-run-number": github.context.runNumber
+                }
+            });
+            if (creds.result == null) {
+                core.setFailed('No result returned from endpoint');
+                return;
             }
-        });
-        core.setSecret(creds.result.accessKeyId);
-        core.exportVariable('AWS_ACCESS_KEY_ID', creds.result.accessKeyId);
-        core.setSecret(creds.result.secretAccessKey);
-        core.exportVariable('AWS_SECRET_ACCESS_KEY', creds.result.secretAccessKey);
-        core.setSecret(creds.result.sessionToken);
-        core.exportVariable('AWS_SESSION_TOKEN', creds.result.sessionToken);
-        core.exportVariable('AWS_DEFAULT_REGION', creds.result.region);
-        core.exportVariable('AWS_REGION', creds.result.region);
+            exportCreds(creds.result);
+        }
+        catch (e) {
+            core.setFailed(e);
+        }
     });
 }
 run();
