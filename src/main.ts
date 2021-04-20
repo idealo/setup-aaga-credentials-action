@@ -1,19 +1,33 @@
 import * as core from '@actions/core'
-import {wait} from './wait'
+import * as github from '@actions/github'
+import * as rm from 'typed-rest-client/RestClient'
+
+interface AwsCreds {
+  accessKeyId: string
+  secretAccessKey: string
+  sessionToken: string
+}
 
 async function run(): Promise<void> {
-  try {
-    const ms: string = core.getInput('milliseconds')
-    core.debug(`Waiting ${ms} milliseconds ...`) // debug is only output if you set the secret `ACTIONS_RUNNER_DEBUG` to true
+  const client = new rm.RestClient('actions')
 
-    core.debug(new Date().toTimeString())
-    await wait(parseInt(ms, 10))
-    core.debug(new Date().toTimeString())
+  const creds = await client.create<AwsCreds>(core.getInput('endpoint'), null, {
+    additionalHeaders: {
+      Authorization: `Bearer ${core.getInput('token')}`,
+      "github-repository": github.context.repo.repo,
+      "github-run-id": github.context.runId,
+      "github-run-number": github.context.runNumber
+    }
+  })
 
-    core.setOutput('time', new Date().toTimeString())
-  } catch (error) {
-    core.setFailed(error.message)
-  }
+  core.setSecret(creds.result!.accessKeyId)
+  core.exportVariable('AWS_ACCESS_KEY_ID', creds.result!.accessKeyId)
+
+  core.setSecret(creds.result!.secretAccessKey)
+  core.exportVariable('AWS_SECRET_ACCESS_KEY', creds.result!.secretAccessKey)
+
+  core.setSecret(creds.result!.sessionToken)
+  core.exportVariable('AWS_SESSION_TOKEN', creds.result!.sessionToken)
 }
 
 run()
