@@ -10,4 +10,5 @@ inputs:
     description: 'The endpoint to use for exchanging the GitHub Token for AWS credentials'
 runs:
   using: 'node12'
-  main: 'dist/index.js'
+  main: 'dist/main/index.js'
+  post: 'dist/cleanup/index.js'
