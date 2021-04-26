@@ -1,0 +1,8 @@
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+npm run build
+npm run package
+git add dist/*
+npx --no-install pretty-quick --staged --pattern "src/**/*.ts"
+npx --no-install lint-staged
