@@ -29,7 +29,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__webpack_require__(2186));
 const github = __importStar(__webpack_require__(5438));
-const rm = __importStar(__webpack_require__(7405));
+const translator_client_1 = __webpack_require__(4138);
 function exportCreds(creds) {
     core.setSecret(creds.accessKeyId);
     core.exportVariable('AWS_ACCESS_KEY_ID', creds.accessKeyId);
@@ -41,28 +41,74 @@ function exportCreds(creds) {
     core.exportVariable('AWS_REGION', creds.region);
 }
 async function run() {
-    const client = new rm.RestClient('actions');
+    const translatorClient = new translator_client_1.TranslatorClient();
     try {
-        const creds = await client.create(core.getInput('endpoint'), null, {
-            additionalHeaders: {
-                Authorization: `Bearer ${core.getInput('token')}`,
-                "github-repo-owner": github.context.repo.owner,
-                "github-repo-name": github.context.repo.repo,
-                "github-run-id": github.context.runId,
-                "github-run-number": github.context.runNumber
-            }
+        const creds = await translatorClient.retrieveCreds(core.getInput('endpoint'), {
+            token: core.getInput('token'),
+            repoOwner: github.context.repo.owner,
+            repoName: github.context.repo.repo,
+            runId: github.context.runId,
+            runNumber: github.context.runNumber
         });
-        if (creds.result == null) {
-            core.setFailed('No result returned from endpoint');
-            return;
-        }
-        exportCreds(creds.result);
+        exportCreds(creds);
     }
     catch (e) {
         core.setFailed(e);
     }
 }
 run();
+
+
+/***/ }),
+
+/***/ 4138:
+/***/ (function(__unused_webpack_module, exports, __webpack_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.TranslatorClient = void 0;
+const rm = __importStar(__webpack_require__(7405));
+class TranslatorClient {
+    constructor() {
+        this.client = new rm.RestClient('actions');
+    }
+    async retrieveCreds(endpoint, authContext) {
+        const response = await this.client.create(endpoint, null, {
+            additionalHeaders: {
+                Authorization: `Bearer ${authContext.token}`,
+                "github-repo-owner": authContext.repoOwner,
+                "github-repo-name": authContext.repoName,
+                "github-run-id": authContext.runId,
+                "github-run-number": authContext.runNumber
+            }
+        });
+        if (response.result == null) {
+            throw new Error("No result returned from endpoint");
+        }
+        return response.result;
+    }
+}
+exports.TranslatorClient = TranslatorClient;
 
 
 /***/ }),
