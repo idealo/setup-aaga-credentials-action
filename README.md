@@ -1,4 +1,4 @@
-# configure-iam-bastion-credentials
+# setup-iam-bastion-credentials-action
 
 This action configures the environment with credentials retrieved from the [github-aws-trust-translator](https://github.com/idealo/github-aws-trust-translator).
 
@@ -8,7 +8,7 @@ To use this in GitHub Actions you can add this snippet to your workflow job step
 
 ```yaml
 - name: Get Bastion role creds
-  uses: idealo/configure-iam-bastion-credentials@v0
+  uses: idealo/setup-iam-bastion-credentials-action@v0
   with:
     token: ${{github.token}}
     endpoint: <ENDPOINT-FROM-STACK-OUTPUT>

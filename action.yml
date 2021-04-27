@@ -1,4 +1,4 @@
-name: 'Configure IAM Bastion Role credentials'
+name: 'Setup IAM Bastion Role credentials'
 description: 'Configures the credentials to access an IAM bastion role via the GitHub Token.'
 author: 'idealo Internet GmbH'
 inputs:

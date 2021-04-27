@@ -1,5 +1,5 @@
 {
-  "name": "configure-iam-bastion-credentials",
+  "name": "setup-iam-bastion-credentials-action",
   "version": "0.1.0",
   "private": true,
   "description": "Configures the environment with AWS credentials for an IAM Bastion role",
