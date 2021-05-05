@@ -21,7 +21,7 @@ async function run(): Promise<void> {
 
   try {
     const creds = await translatorClient.retrieveCreds(
-      core.getInput('endpoint'),
+      core.getInput('endpoint', {required: true}),
       {
         token: core.getInput('token'),
         repoOwner: github.context.repo.owner,
