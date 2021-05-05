@@ -42,7 +42,7 @@ function exportCreds(creds) {
 async function run() {
     const translatorClient = new translator_client_1.TranslatorClient();
     try {
-        const creds = await translatorClient.retrieveCreds(core.getInput('endpoint'), {
+        const creds = await translatorClient.retrieveCreds(core.getInput('endpoint', { required: true }), {
             token: core.getInput('token'),
             repoOwner: github.context.repo.owner,
             repoName: github.context.repo.repo,

@@ -3,8 +3,9 @@ description: 'Configures the credentials to access an IAM bastion role via the G
 author: 'idealo Internet GmbH'
 inputs:
   token:
-    required: true
+    required: false
     description: 'GitHub Token generated for this workflow'
+    default: ${{ github.token }}
   endpoint:
     required: true
     description: 'The endpoint to use for exchanging the GitHub Token for AWS credentials'

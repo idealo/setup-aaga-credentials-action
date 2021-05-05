@@ -10,7 +10,6 @@ To use this in GitHub Actions you can add this snippet to your workflow job step
 - name: Get Bastion role creds
   uses: idealo/setup-iam-bastion-credentials-action@v0
   with:
-    token: ${{github.token}}
     endpoint: <ENDPOINT-FROM-STACK-OUTPUT>
 - name: Assume PoC deployment role
   uses: aws-actions/configure-aws-credentials@v1
