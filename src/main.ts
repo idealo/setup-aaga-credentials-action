@@ -3,7 +3,7 @@ import * as github from '@actions/github'
 import io from '@actions/io'
 import {AuthContext, AwsCreds, TranslatorClient} from './translator-client'
 import path from 'path'
-import * as fs from 'fs/promises'
+import * as fs from 'fs'
 
 function exportCreds(creds: AwsCreds): void {
   core.setSecret(creds.accessKeyId)
@@ -45,7 +45,7 @@ source_profile = bastion`.trim()
   await io.mkdirP(configDir)
 
   core.debug(`Setting up ${configFile}`)
-  await fs.writeFile(configFile, config)
+  await fs.promises.writeFile(configFile, config)
 }
 
 async function run(): Promise<void> {

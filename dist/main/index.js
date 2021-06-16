@@ -34,7 +34,7 @@ const github = __importStar(__nccwpck_require__(5438));
 const io_1 = __importDefault(__nccwpck_require__(7436));
 const translator_client_1 = __nccwpck_require__(4138);
 const path_1 = __importDefault(__nccwpck_require__(5622));
-const fs = __importStar(__nccwpck_require__(9225));
+const fs = __importStar(__nccwpck_require__(5747));
 function exportCreds(creds) {
     core.setSecret(creds.accessKeyId);
     core.exportVariable('AWS_ACCESS_KEY_ID', creds.accessKeyId);
@@ -59,7 +59,7 @@ source_profile = bastion`.trim();
     core.debug(`Creating ${configDir}`);
     await io_1.default.mkdirP(configDir);
     core.debug(`Setting up ${configFile}`);
-    await fs.writeFile(configFile, config);
+    await fs.promises.writeFile(configFile, config);
 }
 async function run() {
     const authContext = {
@@ -9680,14 +9680,6 @@ module.exports = require("events");;
 
 "use strict";
 module.exports = require("fs");;
-
-/***/ }),
-
-/***/ 9225:
-/***/ ((module) => {
-
-"use strict";
-module.exports = require("fs/promises");;
 
 /***/ }),
 
