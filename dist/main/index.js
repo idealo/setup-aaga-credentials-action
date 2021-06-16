@@ -50,12 +50,10 @@ async function writeConfigFile(endpoint, role, externalId) {
     const config = `
 [default]
 source_profile = bastion
-region = eu-central-1
 role_arn = ${role}
 ${externalId ? 'external_id = ' + externalId : ''}
 
 [profile bastion]
-region = eu-central-1
 credential_process = "${process.execPath}" "${scriptPath}" "${endpoint}"`.trim();
     const configFile = `${process.env.HOME}/.aws/config`;
     const configDir = path_1.default.dirname(configFile);
