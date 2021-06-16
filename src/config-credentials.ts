@@ -5,7 +5,7 @@ const client = new TranslatorClient()
 
 async function run() {
   const creds = await client.retrieveCreds(args[0], {
-    token: args[1],
+    token: process.env.GITHUB_TOKEN || '',
     repoOwner: args[2],
     repoName: args[3],
     runId: parseInt(args[4]),

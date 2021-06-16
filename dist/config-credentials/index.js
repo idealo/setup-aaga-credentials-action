@@ -3403,7 +3403,7 @@ const args = process.argv.slice(2);
 const client = new translator_client_1.TranslatorClient();
 async function run() {
     const creds = await client.retrieveCreds(args[0], {
-        token: args[1],
+        token: process.env.GITHUB_TOKEN || '',
         repoOwner: args[2],
         repoName: args[3],
         runId: parseInt(args[4]),
