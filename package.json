@@ -11,7 +11,7 @@
     "format": "prettier --write src/**/*.ts",
     "format-check": "prettier --check src/**/*.ts",
     "lint": "eslint src/**/*.ts",
-    "package": "rimraf dist && ncc build --source-map --license licenses.txt -o dist/main && ncc build lib/cleanup.js --source-map --license licenses.txt -o dist/cleanup",
+    "package": "rimraf dist && ncc build --source-map --license licenses.txt -o dist/main && ncc build lib/cleanup.js --source-map --license licenses.txt -o dist/cleanup && ncc build lib/config-credentials.js --source-map --license licenses.txt -o dist/config-credentials",
     "prepare": "husky install"
   },
   "repository": "github:idealo/configure-iam-bastion-credentials",
@@ -25,6 +25,7 @@
   "dependencies": {
     "@actions/core": "^1.4.0",
     "@actions/github": "^5.0.0",
+    "@actions/io": "^1.1.1",
     "typed-rest-client": "^1.8.4"
   },
   "devDependencies": {

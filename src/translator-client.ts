@@ -1,6 +1,6 @@
 import * as rm from 'typed-rest-client'
 
-interface AuthContext {
+export interface AuthContext {
   token: string
   repoOwner: string
   repoName: string
