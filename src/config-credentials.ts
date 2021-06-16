@@ -18,7 +18,7 @@ async function run() {
       AccessKeyId: creds.accessKeyId,
       SecretAccessKey: creds.secretAccessKey,
       SessionToken: creds.sessionToken,
-      Expiration: creds.sessionToken
+      Expiration: creds.expiration
     })
   )
 }
