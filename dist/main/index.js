@@ -48,12 +48,14 @@ function exportCreds(creds) {
 async function writeConfigFile(role, endpoint, ctx) {
     const scriptPath = path_1.default.resolve(__dirname, '..', 'config-credentials', 'index.js');
     const config = `
-[profile bastion]
-credential_process = "${process.execPath}" "${scriptPath}" "${endpoint}" "${ctx.token}" "${ctx.repoOwner}" "${ctx.repoName}" "${ctx.runId}" "${ctx.runNumber}"
-  
-[profile default]
+[default]
+region = eu-central-1
 role_arn = ${role}
-source_profile = bastion`.trim();
+source_profile = bastion
+
+[profile bastion]
+region = eu-central-1
+credential_process = "${process.execPath}" "${scriptPath}" "${endpoint}" "${ctx.token}" "${ctx.repoOwner}" "${ctx.repoName}" "${ctx.runId}" "${ctx.runNumber}"`.trim();
     const configFile = `${process.env.HOME}/.aws/config`;
     const configDir = path_1.default.dirname(configFile);
     core.debug(`Creating ${configDir}`);
