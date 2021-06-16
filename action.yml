@@ -9,6 +9,16 @@ inputs:
   endpoint:
     required: true
     description: 'The endpoint to use for exchanging the GitHub Token for AWS credentials'
+  mode:
+    required: false
+    description: 'Which mode of credential setup should be used (env is more compatible, config creates config files that allow for auto-renewal)'
+    default: 'env'
+  role-to-assume:
+    required: false
+    description: 'Which AWS role should be assumed (only for config mode)'
+  role-external-id:
+    required: false
+    description: 'The external ID of the role to assume (only for config mode)'
 runs:
   using: 'node12'
   main: 'dist/main/index.js'
