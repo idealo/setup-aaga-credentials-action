@@ -31,7 +31,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
-const io_1 = __importDefault(__nccwpck_require__(7436));
+const io = __importStar(__nccwpck_require__(7436));
 const translator_client_1 = __nccwpck_require__(4138);
 const path_1 = __importDefault(__nccwpck_require__(5622));
 const fs = __importStar(__nccwpck_require__(5747));
@@ -57,7 +57,7 @@ source_profile = bastion`.trim();
     const configFile = `${process.env.HOME}/.aws/config`;
     const configDir = path_1.default.dirname(configFile);
     core.debug(`Creating ${configDir}`);
-    await io_1.default.mkdirP(configDir);
+    await io.mkdirP(configDir);
     core.debug(`Setting up ${configFile}`);
     await fs.promises.writeFile(configFile, config);
 }
