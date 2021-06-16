@@ -12,13 +12,15 @@ async function run() {
     runNumber: parseInt(args[5])
   })
 
-  console.log({
-    Version: 1,
-    AccessKeyId: creds.accessKeyId,
-    SecretAccessKey: creds.secretAccessKey,
-    SessionToken: creds.sessionToken,
-    Expiration: creds.sessionToken
-  })
+  console.log(
+    JSON.stringify({
+      Version: 1,
+      AccessKeyId: creds.accessKeyId,
+      SecretAccessKey: creds.secretAccessKey,
+      SessionToken: creds.sessionToken,
+      Expiration: creds.sessionToken
+    })
+  )
 }
 
 run()

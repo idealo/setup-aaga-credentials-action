@@ -3409,13 +3409,13 @@ async function run() {
         runId: parseInt(args[4]),
         runNumber: parseInt(args[5])
     });
-    console.log({
+    console.log(JSON.stringify({
         Version: 1,
         AccessKeyId: creds.accessKeyId,
         SecretAccessKey: creds.secretAccessKey,
         SessionToken: creds.sessionToken,
         Expiration: creds.sessionToken
-    });
+    }));
 }
 run();
 
