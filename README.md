@@ -42,6 +42,55 @@ The role that you want to assume needs to have its trust relationship set like s
 }
 ```
 
+## Modes
+
+This action supports two different modes of operation, which may be useful for different situations.
+
+### env
+
+The `env` mode will export temporary credentials for the bastion role into the environment.
+This is the most compatible mode, as it is supported by (nearly) all tools, CLIs and SDKs.
+You can assume your deployment role through other tooling, such as the official [aws-actions/configure-aws-credentials](https://github.com/aws-actions/configure-aws-credentials) action.
+However, credentials retrieved via this process can only be valid for a maximum of an hour (limit for role chaining) and must then be renewed by running the same actions again.
+
+<details>
+<summary>Sample usage with the env mode</summary>
+
+```yaml
+- name: Get Bastion role creds
+  uses: idealo/setup-iam-bastion-credentials-action@v0
+  with:
+    endpoint: <ENDPOINT-FROM-STACK-OUTPUT>
+- name: Assume PoC deployment role
+  uses: aws-actions/configure-aws-credentials@v1
+  with:
+    aws-region: eu-central-1
+    role-to-assume: <ROLE-YOU-WANT-TO-DEPLOY-WITH>
+    role-skip-session-tagging: true
+    role-duration-seconds: 900
+```
+</details>
+
+### config
+
+The `config` mode will prepare an `~/.aws/config` file that can retrieve bastion credentials and assume a target role with them.
+The benefit of using this mode is that it allows auto-renewal of credentials, which makes long-running processes more viable.
+For example, this would make Terraform apply runs that may exceed an hour of runtime possible.
+This setup is supported by most SDKs and tools, but not all.
+
+<details>
+<summary>Sample usage with the config mode</summary>
+
+```yaml
+- name: Get Bastion role creds
+  uses: idealo/setup-iam-bastion-credentials-action@v0
+  with:
+    endpoint: <ENDPOINT-FROM-STACK-OUTPUT>
+    mode: config
+    role-to-assume: <ROLE-YOU-WANT-TO-DEPLOY-WITH>
+```
+</details>
+
 ## Developer Guide
 
 ### Publishing to a distribution branch
