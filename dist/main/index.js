@@ -45,12 +45,13 @@ function exportCreds(creds) {
     core.exportVariable('AWS_DEFAULT_REGION', creds.region);
     core.exportVariable('AWS_REGION', creds.region);
 }
-async function writeConfigFile(role, endpoint) {
+async function writeConfigFile(endpoint, role, externalId) {
     const scriptPath = path_1.default.resolve(__dirname, '..', 'config-credentials', 'index.js');
     const config = `
 [default]
 region = eu-central-1
 role_arn = ${role}
+external_id = ${externalId}
 source_profile = bastion
 
 [profile bastion]
@@ -80,7 +81,8 @@ async function run() {
                 break;
             case 'config':
                 const role = core.getInput('role-to-assume', { required: true });
-                await writeConfigFile(role, endpoint);
+                const externalId = core.getInput('role-external-id');
+                await writeConfigFile(endpoint, role, externalId);
                 break;
             default:
                 core.setFailed(`Mode ${core.getInput('mode')} is not supported`);
