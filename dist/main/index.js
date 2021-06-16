@@ -49,10 +49,10 @@ async function writeConfigFile(endpoint, role, externalId) {
     const scriptPath = path_1.default.resolve(__dirname, '..', 'config-credentials', 'index.js');
     const config = `
 [default]
+source_profile = bastion
 region = eu-central-1
 role_arn = ${role}
-external_id = ${externalId}
-source_profile = bastion
+${externalId ? 'external_id = ' + externalId : ''}
 
 [profile bastion]
 region = eu-central-1

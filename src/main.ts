@@ -32,10 +32,10 @@ async function writeConfigFile(
   )
   const config = `
 [default]
+source_profile = bastion
 region = eu-central-1
 role_arn = ${role}
-external_id = ${externalId}
-source_profile = bastion
+${externalId ? 'external_id = ' + externalId : ''}
 
 [profile bastion]
 region = eu-central-1
