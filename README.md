@@ -78,6 +78,8 @@ The benefit of using this mode is that it allows auto-renewal of credentials, wh
 For example, this would make Terraform apply runs that may exceed an hour of runtime possible.
 This setup is supported by most SDKs and tools, but not all.
 
+In order to have access for creating credentials, each action that may access AWS must have `GITHUB_TOKEN` in its environment (`env`).
+
 <details>
 <summary>Sample usage with the config mode</summary>
 
@@ -88,6 +90,9 @@ This setup is supported by most SDKs and tools, but not all.
     endpoint: <ENDPOINT-FROM-STACK-OUTPUT>
     mode: config
     role-to-assume: <ROLE-YOU-WANT-TO-DEPLOY-WITH>
+- run: aws sts get-caller-identity --region eu-central-1
+  env:
+    GITHUB_TOKEN: ${{github.token}}
 ```
 </details>
 
