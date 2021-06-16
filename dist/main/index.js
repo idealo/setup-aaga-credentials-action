@@ -45,7 +45,7 @@ function exportCreds(creds) {
     core.exportVariable('AWS_DEFAULT_REGION', creds.region);
     core.exportVariable('AWS_REGION', creds.region);
 }
-async function writeConfigFile(role, endpoint, ctx) {
+async function writeConfigFile(role, endpoint) {
     const scriptPath = path_1.default.resolve(__dirname, '..', 'config-credentials', 'index.js');
     const config = `
 [default]
@@ -55,7 +55,7 @@ source_profile = bastion
 
 [profile bastion]
 region = eu-central-1
-credential_process = "${process.execPath}" "${scriptPath}" "${endpoint}" "${ctx.token}" "${ctx.repoOwner}" "${ctx.repoName}" "${ctx.runId}" "${ctx.runNumber}"`.trim();
+credential_process = "${process.execPath}" "${scriptPath}" "${endpoint}"`.trim();
     const configFile = `${process.env.HOME}/.aws/config`;
     const configDir = path_1.default.dirname(configFile);
     core.debug(`Creating ${configDir}`);
@@ -64,24 +64,23 @@ credential_process = "${process.execPath}" "${scriptPath}" "${endpoint}" "${ctx.
     await fs.promises.writeFile(configFile, config);
 }
 async function run() {
-    const authContext = {
-        token: core.getInput('token'),
-        repoOwner: github.context.repo.owner,
-        repoName: github.context.repo.repo,
-        runId: github.context.runId,
-        runNumber: github.context.runNumber
-    };
     try {
         const endpoint = core.getInput('endpoint', { required: true });
         switch (core.getInput('mode')) {
             case 'env':
                 const translatorClient = new translator_client_1.TranslatorClient();
-                const creds = await translatorClient.retrieveCreds(endpoint, authContext);
+                const creds = await translatorClient.retrieveCreds(endpoint, {
+                    token: core.getInput('token'),
+                    repoOwner: github.context.repo.owner,
+                    repoName: github.context.repo.repo,
+                    runId: github.context.runId,
+                    runNumber: github.context.runNumber
+                });
                 exportCreds(creds);
                 break;
             case 'config':
                 const role = core.getInput('role-to-assume', { required: true });
-                await writeConfigFile(role, endpoint, authContext);
+                await writeConfigFile(role, endpoint);
                 break;
             default:
                 core.setFailed(`Mode ${core.getInput('mode')} is not supported`);

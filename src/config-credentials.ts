@@ -1,4 +1,5 @@
 import {TranslatorClient} from './translator-client'
+import * as github from '@actions/github'
 
 const args = process.argv.slice(2)
 const client = new TranslatorClient()
@@ -6,10 +7,10 @@ const client = new TranslatorClient()
 async function run() {
   const creds = await client.retrieveCreds(args[0], {
     token: process.env.GITHUB_TOKEN || '',
-    repoOwner: args[2],
-    repoName: args[3],
-    runId: parseInt(args[4]),
-    runNumber: parseInt(args[5])
+    repoOwner: github.context.repo.owner,
+    repoName: github.context.repo.repo,
+    runId: github.context.runId,
+    runNumber: github.context.runNumber
   })
 
   console.log(
