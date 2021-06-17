@@ -37,7 +37,7 @@ role_arn = ${role}
 ${externalId ? 'external_id = ' + externalId : ''}
 
 [profile bastion]
-credential_process = "${process.execPath}" "${scriptPath}" "${endpoint}"`.trim()
+credential_process = ${process.execPath} ${scriptPath} ${endpoint}`.trim()
 
   const configFile = `${process.env.HOME}/.aws/config`
   const configDir = path.dirname(configFile)
