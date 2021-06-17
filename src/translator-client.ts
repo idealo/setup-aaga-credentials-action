@@ -17,7 +17,9 @@ export interface AwsCreds {
 }
 
 export class TranslatorClient {
-  private readonly client = new rm.RestClient('actions')
+  private readonly client = new rm.RestClient('actions', undefined, undefined, {
+    socketTimeout: 15 * 1000
+  })
 
   async retrieveCreds(
     endpoint: string,

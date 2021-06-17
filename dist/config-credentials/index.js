@@ -31,20 +31,25 @@ const github = __importStar(__nccwpck_require__(5438));
 const args = process.argv.slice(2);
 const client = new translator_client_1.TranslatorClient();
 async function run() {
-    const creds = await client.retrieveCreds(args[0], {
-        token: process.env.GITHUB_TOKEN || '',
-        repoOwner: github.context.repo.owner,
-        repoName: github.context.repo.repo,
-        runId: github.context.runId,
-        runNumber: github.context.runNumber
-    });
-    console.log(JSON.stringify({
-        Version: 1,
-        AccessKeyId: creds.accessKeyId,
-        SecretAccessKey: creds.secretAccessKey,
-        SessionToken: creds.sessionToken,
-        Expiration: creds.expiration
-    }));
+    try {
+        const creds = await client.retrieveCreds(args[0], {
+            token: process.env.GITHUB_TOKEN || '',
+            repoOwner: github.context.repo.owner,
+            repoName: github.context.repo.repo,
+            runId: github.context.runId,
+            runNumber: github.context.runNumber
+        });
+        console.log(JSON.stringify({
+            Version: 1,
+            AccessKeyId: creds.accessKeyId,
+            SecretAccessKey: creds.secretAccessKey,
+            SessionToken: creds.sessionToken,
+            Expiration: creds.expiration
+        }));
+    }
+    catch (e) {
+        console.error(e);
+    }
 }
 run();
 
@@ -80,7 +85,9 @@ exports.TranslatorClient = void 0;
 const rm = __importStar(__nccwpck_require__(7405));
 class TranslatorClient {
     constructor() {
-        this.client = new rm.RestClient('actions');
+        this.client = new rm.RestClient('actions', undefined, undefined, {
+            socketTimeout: 15 * 1000
+        });
     }
     async retrieveCreds(endpoint, authContext) {
         const response = await this.client.create(endpoint, null, {

@@ -124,7 +124,9 @@ exports.TranslatorClient = void 0;
 const rm = __importStar(__nccwpck_require__(7405));
 class TranslatorClient {
     constructor() {
-        this.client = new rm.RestClient('actions');
+        this.client = new rm.RestClient('actions', undefined, undefined, {
+            socketTimeout: 15 * 1000
+        });
     }
     async retrieveCreds(endpoint, authContext) {
         const response = await this.client.create(endpoint, null, {
