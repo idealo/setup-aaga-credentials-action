@@ -32,7 +32,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(2186));
 const github = __importStar(__nccwpck_require__(5438));
 const io = __importStar(__nccwpck_require__(7436));
-const translator_client_1 = __nccwpck_require__(4138);
+const translator_client_1 = __importDefault(__nccwpck_require__(4138));
 const path_1 = __importDefault(__nccwpck_require__(5622));
 const fs = __importStar(__nccwpck_require__(5747));
 function exportCreds(creds) {
@@ -67,7 +67,7 @@ async function run() {
         const endpoint = core.getInput('endpoint', { required: true });
         switch (core.getInput('mode')) {
             case 'env':
-                const translatorClient = new translator_client_1.TranslatorClient();
+                const translatorClient = new translator_client_1.default();
                 const creds = await translatorClient.retrieveCreds(endpoint, {
                     token: core.getInput('token'),
                     repoOwner: github.context.repo.owner,
@@ -120,7 +120,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.TranslatorClient = void 0;
 const rm = __importStar(__nccwpck_require__(7405));
 class TranslatorClient {
     constructor() {
@@ -144,7 +143,7 @@ class TranslatorClient {
         return response.result;
     }
 }
-exports.TranslatorClient = TranslatorClient;
+exports.default = TranslatorClient;
 
 
 /***/ }),

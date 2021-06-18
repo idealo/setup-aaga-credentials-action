@@ -16,7 +16,7 @@ export interface AwsCreds {
   region: string
 }
 
-export class TranslatorClient {
+export default class TranslatorClient {
   private readonly client = new rm.RestClient('actions', undefined, undefined, {
     socketTimeout: 15 * 1000
   })
