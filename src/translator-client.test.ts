@@ -1,5 +1,5 @@
 import nock from 'nock'
-import {TranslatorClient} from './translator-client'
+import TranslatorClient from './translator-client'
 
 describe('Translator Client', () => {
   const translatorClient = new TranslatorClient()

@@ -1,7 +1,7 @@
 import * as core from '@actions/core'
 import * as github from '@actions/github'
 import * as io from '@actions/io'
-import {AwsCreds, TranslatorClient} from './translator-client'
+import TranslatorClient, {AwsCreds} from './translator-client'
 import path from 'path'
 import * as fs from 'fs'
 
