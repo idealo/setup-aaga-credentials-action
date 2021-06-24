@@ -1,4 +1,4 @@
-import TranslatorClient from './translator-client'
+import TranslatorClient, {MtlsOptions} from './translator-client'
 import * as github from '@actions/github'
 import * as flatCache from 'flat-cache'
 import path from 'path'
@@ -18,13 +18,26 @@ async function retrieveCredentials(): Promise<CredentialProcessOutput> {
   const args = process.argv.slice(2)
   const client = new TranslatorClient()
 
-  const credentials = await client.retrieveCreds(args[0], {
-    token: process.env.GITHUB_TOKEN || '',
-    repoOwner: github.context.repo.owner,
-    repoName: github.context.repo.repo,
-    runId: github.context.runId,
-    runNumber: github.context.runNumber
-  })
+  const mtlsOptions = {
+    cert: process.env.AAGA_MTLS_CERTIFICATE,
+    key: process.env.AAGA_MTLS_KEY,
+    ca: process.env.AAGA_MTLS_CA
+  }
+  const mtlsOptionsValid = !Object.values(mtlsOptions).some(
+    value => value == undefined
+  )
+
+  const credentials = await client.retrieveCreds(
+    args[0],
+    {
+      token: process.env.GITHUB_TOKEN || '',
+      repoOwner: github.context.repo.owner,
+      repoName: github.context.repo.repo,
+      runId: github.context.runId,
+      runNumber: github.context.runNumber
+    },
+    mtlsOptionsValid ? (mtlsOptions as MtlsOptions) : undefined
+  )
 
   return {
     Version: 1,

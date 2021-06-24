@@ -19,7 +19,7 @@ export interface AwsCreds {
   region: string
 }
 
-interface MtlsOptions {
+export interface MtlsOptions {
   cert: string
   key: string
   ca: string
