@@ -61,13 +61,23 @@ async function run(): Promise<void> {
     switch (core.getInput('mode')) {
       case 'env':
         const translatorClient = new TranslatorClient()
-        const creds = await translatorClient.retrieveCreds(endpoint, {
-          token: core.getInput('token'),
-          repoOwner: github.context.repo.owner,
-          repoName: github.context.repo.repo,
-          runId: github.context.runId,
-          runNumber: github.context.runNumber
-        })
+        const mtlsOptions = {
+          ca: core.getInput('caCertificate'),
+          cert: core.getInput('clientCertificate'),
+          key: core.getInput('clientKey')
+        }
+
+        const creds = await translatorClient.retrieveCreds(
+          endpoint,
+          {
+            token: core.getInput('token'),
+            repoOwner: github.context.repo.owner,
+            repoName: github.context.repo.repo,
+            runId: github.context.runId,
+            runNumber: github.context.runNumber
+          },
+          mtlsOptions
+        )
         exportCreds(creds)
         break
       case 'config':
