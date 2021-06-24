@@ -130,8 +130,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const axios_1 = __importDefault(__nccwpck_require__(6545));
 const Https = __importStar(__nccwpck_require__(7211));
+const tls = __importStar(__nccwpck_require__(4016));
 class TranslatorClient {
     async retrieveCreds(endpoint, authContext, mtlsOptions) {
+        let agentOptions = null;
+        if (mtlsOptions != undefined) {
+            agentOptions = {
+                cert: mtlsOptions.cert,
+                key: mtlsOptions.key,
+                ca: [...tls.rootCertificates, mtlsOptions.ca]
+            };
+        }
         const response = await axios_1.default.post(endpoint, undefined, {
             headers: {
                 Authorization: `Bearer ${authContext.token}`,
@@ -140,7 +149,7 @@ class TranslatorClient {
                 'github-run-id': authContext.runId,
                 'github-run-number': authContext.runNumber
             },
-            httpsAgent: mtlsOptions != undefined ? new Https.Agent(mtlsOptions) : undefined
+            httpsAgent: agentOptions != null ? new Https.Agent(agentOptions) : undefined
         });
         return response.data;
     }

@@ -1,6 +1,7 @@
 import axios from 'axios'
 import * as Https from 'https'
 import {AgentOptions} from 'https'
+import * as tls from 'tls'
 
 export interface AuthContext {
   token: string
@@ -18,7 +19,11 @@ export interface AwsCreds {
   region: string
 }
 
-type MtlsOptions = Pick<AgentOptions, 'cert' | 'key' | 'ca'>
+interface MtlsOptions {
+  cert: string
+  key: string
+  ca: string
+}
 
 export default class TranslatorClient {
   async retrieveCreds(
@@ -26,6 +31,15 @@ export default class TranslatorClient {
     authContext: AuthContext,
     mtlsOptions?: MtlsOptions
   ): Promise<AwsCreds> {
+    let agentOptions: AgentOptions | null = null
+    if (mtlsOptions != undefined) {
+      agentOptions = {
+        cert: mtlsOptions.cert,
+        key: mtlsOptions.key,
+        ca: [...tls.rootCertificates, mtlsOptions.ca]
+      }
+    }
+
     const response = await axios.post<AwsCreds>(endpoint, undefined, {
       headers: {
         Authorization: `Bearer ${authContext.token}`,
@@ -35,7 +49,7 @@ export default class TranslatorClient {
         'github-run-number': authContext.runNumber
       },
       httpsAgent:
-        mtlsOptions != undefined ? new Https.Agent(mtlsOptions) : undefined
+        agentOptions != null ? new Https.Agent(agentOptions) : undefined
     })
 
     return response.data
