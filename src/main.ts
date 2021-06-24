@@ -62,9 +62,9 @@ async function run(): Promise<void> {
       case 'env':
         const translatorClient = new TranslatorClient()
         const mtlsOptions = {
-          ca: core.getInput('caCertificate'),
-          cert: core.getInput('clientCertificate'),
-          key: core.getInput('clientKey')
+          ca: core.getInput('ca-certificate'),
+          cert: core.getInput('client-certificate'),
+          key: core.getInput('client-key')
         }
 
         const creds = await translatorClient.retrieveCreds(
