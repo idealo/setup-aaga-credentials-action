@@ -89,6 +89,7 @@ async function run(): Promise<void> {
         core.setFailed(`Mode ${core.getInput('mode')} is not supported`)
     }
   } catch (e) {
+    console.error(e.response)
     core.setFailed(e)
   }
 }

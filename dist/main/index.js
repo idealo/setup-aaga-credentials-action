@@ -92,6 +92,7 @@ async function run() {
         }
     }
     catch (e) {
+        console.error(e.response);
         core.setFailed(e);
     }
 }
