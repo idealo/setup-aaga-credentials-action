@@ -71,6 +71,27 @@ However, credentials retrieved via this process can only be valid for a maximum 
 ```
 </details>
 
+<details>
+<summary>Sample usage with the env mode and mTLS</summary>
+
+```yaml
+- name: Get Bastion role creds
+  uses: idealo/setup-iam-bastion-credentials-action@v0
+  with:
+    endpoint: <ENDPOINT-FROM-STACK-OUTPUT>
+    ca-certificate: ${{ secrets.AAGA_MTLS_CA }}
+    client-certificate: ${{ secrets.AAGA_MTLS_CERTIFICATE }}
+    client-key: ${{ secrets.AAGA_MTLS_KEY }}
+- name: Assume PoC deployment role
+  uses: aws-actions/configure-aws-credentials@v1
+  with:
+    aws-region: eu-central-1
+    role-to-assume: <ROLE-YOU-WANT-TO-DEPLOY-WITH>
+    role-skip-session-tagging: true
+    role-duration-seconds: 900
+```
+</details>
+
 ### config
 
 The `config` mode will prepare an `~/.aws/config` file that can retrieve bastion credentials and assume a target role with them.
@@ -93,6 +114,25 @@ In order to have access for creating credentials, each action that may access AW
 - run: aws sts get-caller-identity --region eu-central-1
   env:
     GITHUB_TOKEN: ${{github.token}}
+```
+</details>
+
+<details>
+<summary>Sample usage with the config mode and mTLS</summary>
+
+```yaml
+- name: Get Bastion role creds
+  uses: idealo/setup-iam-bastion-credentials-action@v0
+  with:
+    endpoint: <ENDPOINT-FROM-STACK-OUTPUT>
+    mode: config
+    role-to-assume: <ROLE-YOU-WANT-TO-DEPLOY-WITH>
+- run: aws sts get-caller-identity --region eu-central-1
+  env:
+    GITHUB_TOKEN: ${{github.token}}
+    AAGA_MTLS_CA: ${{ secrets.AAGA_MTLS_CA }}
+    AAGA_MTLS_CERTIFICATE: ${{ secrets.AAGA_MTLS_CERTIFICATE }}
+    AAGA_MTLS_KEY: ${{ secrets.AAGA_MTLS_KEY }}
 ```
 </details>
 
