@@ -29,13 +29,17 @@ describe('Credential Process Script', () => {
 
     await run()
 
-    expect(mockRetrieveCreds).toHaveBeenCalledWith('https://example.com', {
-      token: 'token',
-      repoOwner: 'idealo',
-      repoName: 'test-repo',
-      runId: 42,
-      runNumber: 1337
-    })
+    expect(mockRetrieveCreds).toHaveBeenCalledWith(
+      'https://example.com',
+      {
+        token: 'token',
+        repoOwner: 'idealo',
+        repoName: 'test-repo',
+        runId: 42,
+        runNumber: 1337
+      },
+      undefined
+    )
   })
 
   it('should return credentials in the CLI format', async () => {

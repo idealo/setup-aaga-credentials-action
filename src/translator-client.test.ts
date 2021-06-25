@@ -63,11 +63,11 @@ describe('Translator Client', () => {
   it('should throw if unauthorized', () => {
     nock('https://some-api.amazonaws.com').post('/creds').reply(401)
 
-    expect(
+    return expect(
       translatorClient.retrieveCreds(
         'https://some-api.amazonaws.com/creds',
         mockAuthContext
       )
-    ).rejects.toThrow('Failed request: (401)')
+    ).rejects.toThrow('Request failed with status code 401')
   })
 })
