@@ -51,7 +51,13 @@ credential_process = ${process.execPath} ${scriptPath} ${endpoint}`.trim()
 
 async function run(): Promise<void> {
   try {
-    const endpoint = core.getInput('endpoint', {required: true})
+    // Ensure that the Endpoint always contains the creds path
+    const endpoint_input = core.getInput('endpoint', {required: true})
+    if (endpoint_input.endswith.endswith('/creds/')) {
+      var endpoint = endpoint_input
+    } else {
+      var endpoint = "${endpoint_input}/creds/"
+    }
 
     switch (core.getInput('mode')) {
       case 'env':
