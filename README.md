@@ -8,7 +8,7 @@ To use this in GitHub Actions you can add this snippet to your workflow job step
 
 ```yaml
 - name: Get Bastion role creds
-  uses: idealo/setup-iam-bastion-credentials-action@v0
+  uses: idealo/setup-iam-bastion-credentials-action@v0.1
   with:
     endpoint: <ENDPOINT-FROM-STACK-OUTPUT>
 - name: Assume PoC deployment role
@@ -58,7 +58,7 @@ However, credentials retrieved via this process can only be valid for a maximum 
 
 ```yaml
 - name: Get Bastion role creds
-  uses: idealo/setup-iam-bastion-credentials-action@v0
+  uses: idealo/setup-iam-bastion-credentials-action@v0.1
   with:
     endpoint: <ENDPOINT-FROM-STACK-OUTPUT>
 - name: Assume PoC deployment role
@@ -85,7 +85,7 @@ In order to have access for creating credentials, each action that may access AW
 
 ```yaml
 - name: Get Bastion role creds
-  uses: idealo/setup-iam-bastion-credentials-action@v0
+  uses: idealo/setup-iam-bastion-credentials-action@v0.1
   with:
     endpoint: <ENDPOINT-FROM-STACK-OUTPUT>
     mode: config
