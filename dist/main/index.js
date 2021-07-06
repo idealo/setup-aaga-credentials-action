@@ -64,10 +64,10 @@ credential_process = ${process.execPath} ${scriptPath} ${endpoint}`.trim();
 }
 async function run() {
     try {
-        // Ensure that the Endpoint always contains the creds path
         let endpoint = core.getInput('endpoint', { required: true });
-        if (!endpoint.endsWith('/creds/')) {
-            endpoint = "${endpoint}/creds/";
+        // ensure that the endpoint always contains the creds path
+        if (!endpoint.match(/.*\/creds[\/]?$/)) {
+            endpoint = `${endpoint}/creds/`;
         }
         switch (core.getInput('mode')) {
             case 'env':
