@@ -19,6 +19,15 @@ inputs:
   role-external-id:
     required: false
     description: 'The external ID of the role to assume (only for config mode)'
+  ca-certificate:
+    required: false
+    description: 'Base64 encoded client certificate the action uses to authenticate when mTLS is enabled.'
+  client-certificate:
+    required: false
+    description: 'Base64 encoded client certificate the action uses to authenticate when mTLS is enabled.'
+  client-key:
+    required: false
+    description: 'Base64 encoded client key the action uses to authenticate when mTLS is enabled.'
 runs:
   using: 'node12'
   main: 'dist/main/index.js'

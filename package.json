@@ -26,8 +26,8 @@
     "@actions/core": "^1.4.0",
     "@actions/github": "^5.0.0",
     "@actions/io": "^1.1.1",
-    "flat-cache": "^3.0.4",
-    "typed-rest-client": "^1.8.4"
+    "axios": "^0.21.1",
+    "flat-cache": "^3.0.4"
   },
   "devDependencies": {
     "@tsconfig/node12": "^1.0.9",

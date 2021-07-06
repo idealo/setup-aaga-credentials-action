@@ -1,4 +1,7 @@
-import * as rm from 'typed-rest-client'
+import axios from 'axios'
+import * as Https from 'https'
+import {AgentOptions} from 'https'
+import * as tls from 'tls'
 
 export interface AuthContext {
   token: string
@@ -16,29 +19,39 @@ export interface AwsCreds {
   region: string
 }
 
-export default class TranslatorClient {
-  private readonly client = new rm.RestClient('actions', undefined, undefined, {
-    socketTimeout: 15 * 1000
-  })
+export interface MtlsOptions {
+  cert: string
+  key: string
+  ca: string
+}
 
+export default class TranslatorClient {
   async retrieveCreds(
     endpoint: string,
-    authContext: AuthContext
+    authContext: AuthContext,
+    mtlsOptions?: MtlsOptions
   ): Promise<AwsCreds> {
-    const response = await this.client.create<AwsCreds>(endpoint, null, {
-      additionalHeaders: {
+    let agentOptions: AgentOptions | null = null
+    if (mtlsOptions != undefined) {
+      agentOptions = {
+        cert: mtlsOptions.cert,
+        key: mtlsOptions.key,
+        ca: [...tls.rootCertificates, mtlsOptions.ca]
+      }
+    }
+
+    const response = await axios.post<AwsCreds>(endpoint, undefined, {
+      headers: {
         Authorization: `Bearer ${authContext.token}`,
         'github-repo-owner': authContext.repoOwner,
         'github-repo-name': authContext.repoName,
         'github-run-id': authContext.runId,
         'github-run-number': authContext.runNumber
-      }
+      },
+      httpsAgent:
+        agentOptions != null ? new Https.Agent(agentOptions) : undefined
     })
 
-    if (response.result == null) {
-      throw new Error('No result returned from endpoint')
-    }
-
-    return response.result
+    return response.data
   }
 }
