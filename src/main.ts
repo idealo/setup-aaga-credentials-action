@@ -4,6 +4,7 @@ import * as io from '@actions/io'
 import TranslatorClient, {AwsCreds} from './translator-client'
 import path from 'path'
 import * as fs from 'fs'
+import {URL} from 'url'
 
 function exportCreds(creds: AwsCreds): void {
   core.setSecret(creds.accessKeyId)
@@ -53,9 +54,21 @@ async function run(): Promise<void> {
   try {
     let endpoint = core.getInput('endpoint', {required: true})
 
-    // ensure that the endpoint always contains the creds path
-    if (!endpoint.match(/.*\/creds[\/]?$/)) {
-      endpoint = `${endpoint}/creds/`
+    try {
+      const parsedUrl = new URL(endpoint)
+      const pathComponents = parsedUrl.pathname.split('/').filter(x => x != '')
+
+      // ensure that the endpoint always contains the creds path
+      if (
+        pathComponents.length < 1 ||
+        pathComponents[pathComponents.length - 1] != 'creds'
+      ) {
+        parsedUrl.pathname = [...pathComponents, 'creds'].join('/')
+        endpoint = parsedUrl.toString()
+      }
+    } catch (e) {
+      core.setFailed(`Invalid URL passed as endpoint: ${e.message}`)
+      return
     }
 
     switch (core.getInput('mode')) {

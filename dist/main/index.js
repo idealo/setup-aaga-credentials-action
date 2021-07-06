@@ -35,6 +35,7 @@ const io = __importStar(__nccwpck_require__(7436));
 const translator_client_1 = __importDefault(__nccwpck_require__(4138));
 const path_1 = __importDefault(__nccwpck_require__(5622));
 const fs = __importStar(__nccwpck_require__(5747));
+const url_1 = __nccwpck_require__(8835);
 function exportCreds(creds) {
     core.setSecret(creds.accessKeyId);
     core.exportVariable('AWS_ACCESS_KEY_ID', creds.accessKeyId);
@@ -65,9 +66,19 @@ credential_process = ${process.execPath} ${scriptPath} ${endpoint}`.trim();
 async function run() {
     try {
         let endpoint = core.getInput('endpoint', { required: true });
-        // ensure that the endpoint always contains the creds path
-        if (!endpoint.match(/.*\/creds[\/]?$/)) {
-            endpoint = `${endpoint}/creds/`;
+        try {
+            const parsedUrl = new url_1.URL(endpoint);
+            const pathComponents = parsedUrl.pathname.split('/')
+                .filter(x => x != '');
+            // ensure that the endpoint always contains the creds path
+            if (pathComponents.length < 1 || pathComponents[pathComponents.length - 1] != 'creds') {
+                parsedUrl.pathname = [...pathComponents, 'creds'].join('/');
+                endpoint = parsedUrl.toString();
+            }
+        }
+        catch (e) {
+            core.setFailed(`Invalid URL passed as endpoint: ${e.message}`);
+            return;
         }
         switch (core.getInput('mode')) {
             case 'env':
