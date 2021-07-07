@@ -1,17 +1,17 @@
-# setup-iam-bastion-credentials-action
+# setup-aaga-credentials-action
 
-This action configures the environment with credentials retrieved from the [github-aws-trust-translator](https://github.com/idealo/github-aws-trust-translator).
+This action configures the environment with credentials retrieved from the [AWS Authenticator for GitHub Actions](https://github.com/idealo/aaga).
 
 ## Usage
 
 To use this in GitHub Actions you can add this snippet to your workflow job steps:
 
 ```yaml
-- name: Get Bastion role creds
-  uses: idealo/setup-iam-bastion-credentials-action@v0.1
+- name: Get bastion role credentials
+  uses: idealo/setup-aaga-credentials-action@v1
   with:
     endpoint: <ENDPOINT-FROM-STACK-OUTPUT>
-- name: Assume PoC deployment role
+- name: Assume deployment role
   uses: aws-actions/configure-aws-credentials@v1
   with:
     aws-region: eu-central-1
@@ -57,11 +57,11 @@ However, credentials retrieved via this process can only be valid for a maximum 
 <summary>Sample usage with the env mode</summary>
 
 ```yaml
-- name: Get Bastion role creds
-  uses: idealo/setup-iam-bastion-credentials-action@v0.1
+- name: Get bastion role credentials
+  uses: idealo/setup-aaga-credentials-action@v1
   with:
     endpoint: <ENDPOINT-FROM-STACK-OUTPUT>
-- name: Assume PoC deployment role
+- name: Assume deployment role
   uses: aws-actions/configure-aws-credentials@v1
   with:
     aws-region: eu-central-1
@@ -75,14 +75,14 @@ However, credentials retrieved via this process can only be valid for a maximum 
 <summary>Sample usage with the env mode and mTLS</summary>
 
 ```yaml
-- name: Get Bastion role creds
-  uses: idealo/setup-iam-bastion-credentials-action@v0
+- name: Get bastion role creds
+  uses: idealo/setup-aaga-credentials-action@v1
   with:
     endpoint: <ENDPOINT-FROM-STACK-OUTPUT>
     ca-certificate: ${{ secrets.AAGA_MTLS_CA }}
     client-certificate: ${{ secrets.AAGA_MTLS_CERTIFICATE }}
     client-key: ${{ secrets.AAGA_MTLS_KEY }}
-- name: Assume PoC deployment role
+- name: Assume deployment role
   uses: aws-actions/configure-aws-credentials@v1
   with:
     aws-region: eu-central-1
@@ -105,8 +105,8 @@ In order to have access for creating credentials, each action that may access AW
 <summary>Sample usage with the config mode</summary>
 
 ```yaml
-- name: Get Bastion role creds
-  uses: idealo/setup-iam-bastion-credentials-action@v0.1
+- name: Get bastion role credentials
+  uses: idealo/setup-aaga-credentials-action@v1
   with:
     endpoint: <ENDPOINT-FROM-STACK-OUTPUT>
     mode: config
@@ -121,8 +121,8 @@ In order to have access for creating credentials, each action that may access AW
 <summary>Sample usage with the config mode and mTLS</summary>
 
 ```yaml
-- name: Get Bastion role creds
-  uses: idealo/setup-iam-bastion-credentials-action@v0
+- name: Get bastion role credentials
+  uses: idealo/setup-aaga-credentials-action@v1
   with:
     endpoint: <ENDPOINT-FROM-STACK-OUTPUT>
     mode: config
