@@ -68,10 +68,10 @@ async function run() {
         let endpoint = core.getInput('endpoint', { required: true });
         try {
             const parsedUrl = new url_1.URL(endpoint);
-            const pathComponents = parsedUrl.pathname.split('/')
-                .filter(x => x != '');
+            const pathComponents = parsedUrl.pathname.split('/').filter(x => x != '');
             // ensure that the endpoint always contains the creds path
-            if (pathComponents.length < 1 || pathComponents[pathComponents.length - 1] != 'creds') {
+            if (pathComponents.length < 1 ||
+                pathComponents[pathComponents.length - 1] != 'creds') {
                 parsedUrl.pathname = [...pathComponents, 'creds'].join('/');
                 endpoint = parsedUrl.toString();
             }
