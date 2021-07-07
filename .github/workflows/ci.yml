@@ -1,13 +1,13 @@
 name: 'CI'
-on: # rebuild any PRs and main branch changes
-  pull_request:
+on:
   push:
     branches:
       - main
-      - 'releases/*'
+      - '[0-9]+.x'
 
 jobs:
-  unit-test: # make sure build/ci work properly
+  build:
+    name: Build & Release
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -27,3 +27,16 @@ jobs:
         run: npm run lint
       - name: Run unit tests
         run: npm test
+      - name: Create new release
+        id: semantic
+        uses: cycjimmy/semantic-release-action@v2
+        with:
+          extra_plugins: |
+            @semantic-release/git
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Tag version series
+        if: steps.semantic.outputs.new_release_published == 'true'
+        run: |
+          git tag -fa v${{ steps.semantic.outputs.new_release_major_version }} -m "Update v${{ steps.semantic.outputs.new_release_major_version }} tag"
+          git push origin v${{ steps.semantic.outputs.new_release_major_version }} --force
