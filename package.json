@@ -30,6 +30,8 @@
     "flat-cache": "^3.0.4"
   },
   "devDependencies": {
+    "@commitlint/cli": "^12.1.4",
+    "@commitlint/config-conventional": "^12.1.4",
     "@tsconfig/node12": "^1.0.9",
     "@types/flat-cache": "^2.0.0",
     "@types/jest": "^26.0.23",
