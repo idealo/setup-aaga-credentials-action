@@ -21,7 +21,7 @@ inputs:
     description: 'The external ID of the role to assume (only for config mode)'
   ca-certificate:
     required: false
-    description: 'Base64 encoded client certificate the action uses to authenticate when mTLS is enabled.'
+    description: 'Base64 encoded certificate authority chain that will be appehnded to the truststore when communicating via HTTPS.'
   client-certificate:
     required: false
     description: 'Base64 encoded client certificate the action uses to authenticate when mTLS is enabled.'

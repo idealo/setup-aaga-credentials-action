@@ -1,8 +1,7 @@
-import TranslatorClient, {MtlsOptions} from './translator-client'
+import TranslatorClient from './translator-client'
 import * as github from '@actions/github'
 import * as flatCache from 'flat-cache'
 import path from 'path'
-import {Cache} from 'flat-cache'
 
 const CREDENTIALS_CACHE_KEY = 'credentials'
 
@@ -23,9 +22,6 @@ async function retrieveCredentials(): Promise<CredentialProcessOutput> {
     key: process.env.AAGA_MTLS_KEY,
     ca: process.env.AAGA_MTLS_CA
   }
-  const mtlsOptionsValid = !Object.values(mtlsOptions).some(
-    value => value == undefined
-  )
 
   const credentials = await client.retrieveCreds(
     args[0],
@@ -36,7 +32,7 @@ async function retrieveCredentials(): Promise<CredentialProcessOutput> {
       runId: github.context.runId,
       runNumber: github.context.runNumber
     },
-    mtlsOptionsValid ? (mtlsOptions as MtlsOptions) : undefined
+    mtlsOptions
   )
 
   return {
@@ -49,7 +45,7 @@ async function retrieveCredentials(): Promise<CredentialProcessOutput> {
 }
 
 function loadCachedCredentials(
-  cache: Cache
+  cache: flatCache.Cache
 ): CredentialProcessOutput | undefined {
   const credentials = cache.getKey(CREDENTIALS_CACHE_KEY) as
     | CredentialProcessOutput
@@ -69,7 +65,7 @@ function loadCachedCredentials(
 }
 
 function saveCredentialCache(
-  cache: Cache,
+  cache: flatCache.Cache,
   credentials: CredentialProcessOutput
 ): void {
   cache.setKey(CREDENTIALS_CACHE_KEY, credentials)

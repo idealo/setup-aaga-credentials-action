@@ -1,6 +1,5 @@
 import axios from 'axios'
 import * as Https from 'https'
-import {AgentOptions} from 'https'
 import * as tls from 'tls'
 
 export interface AuthContext {
@@ -20,9 +19,9 @@ export interface AwsCreds {
 }
 
 export interface MtlsOptions {
-  cert: string
-  key: string
-  ca: string
+  cert?: string
+  key?: string
+  ca?: string
 }
 
 export default class TranslatorClient {
@@ -31,12 +30,14 @@ export default class TranslatorClient {
     authContext: AuthContext,
     mtlsOptions?: MtlsOptions
   ): Promise<AwsCreds> {
-    let agentOptions: AgentOptions | null = null
+    let agentOptions: Https.AgentOptions | null = null
     if (mtlsOptions != undefined) {
       agentOptions = {
         cert: mtlsOptions.cert,
         key: mtlsOptions.key,
-        ca: [...tls.rootCertificates, mtlsOptions.ca]
+        ca: mtlsOptions.ca
+          ? [...tls.rootCertificates, mtlsOptions.ca]
+          : undefined
       }
     }
 
