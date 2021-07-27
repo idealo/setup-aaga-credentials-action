@@ -12,3 +12,5 @@ updates:
     ignore:
       - dependency-name: "@types/node"
         update-types: [ "version-update:semver-major" ]
+      - dependency-name: "*"
+        update-types: [ "version-update:semver-patch" ]
