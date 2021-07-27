@@ -21,13 +21,13 @@ inputs:
     description: 'The external ID of the role to assume (only for config mode)'
   ca-certificate:
     required: false
-    description: 'Base64 encoded certificate authority chain that will be appehnded to the truststore when communicating via HTTPS.'
+    description: 'Certificate authorities that will be appended to the truststore when communicating via HTTPS, in PEM format.'
   client-certificate:
     required: false
-    description: 'Base64 encoded client certificate the action uses to authenticate when mTLS is enabled.'
+    description: 'Client certificate the action uses to authenticate when mTLS is enabled, in PEM format.'
   client-key:
     required: false
-    description: 'Base64 encoded client key the action uses to authenticate when mTLS is enabled.'
+    description: 'Private client key (associated with the certificate) the action uses to authenticate when mTLS is enabled, in PEM format.'
 runs:
   using: 'node12'
   main: 'dist/main/index.js'
