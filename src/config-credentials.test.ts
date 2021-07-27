@@ -38,7 +38,7 @@ describe('Credential Process Script', () => {
         runId: 42,
         runNumber: 1337
       },
-      undefined
+      expect.anything()
     )
   })
 
