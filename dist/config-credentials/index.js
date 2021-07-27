@@ -40,8 +40,7 @@ async function retrieveCredentials() {
     const client = new translator_client_1.default();
     const mtlsOptions = {
         cert: process.env.AAGA_MTLS_CERTIFICATE,
-        key: process.env.AAGA_MTLS_KEY,
-        ca: process.env.AAGA_MTLS_CA
+        key: process.env.AAGA_MTLS_KEY
     };
     const mtlsOptionsValid = !Object.values(mtlsOptions).some(value => value == undefined);
     const credentials = await client.retrieveCreds(args[0], {
@@ -128,15 +127,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const axios_1 = __importDefault(__nccwpck_require__(6545));
 const Https = __importStar(__nccwpck_require__(7211));
-const tls = __importStar(__nccwpck_require__(4016));
 class TranslatorClient {
     async retrieveCreds(endpoint, authContext, mtlsOptions) {
         let agentOptions = null;
         if (mtlsOptions != undefined) {
             agentOptions = {
                 cert: mtlsOptions.cert,
-                key: mtlsOptions.key,
-                ca: [...tls.rootCertificates, mtlsOptions.ca]
+                key: mtlsOptions.key
             };
         }
         const response = await axios_1.default.post(endpoint, undefined, {
@@ -13653,7 +13650,7 @@ module.exports = JSON.parse('{"_from":"axios@^0.21.1","_id":"axios@0.21.1","_inB
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("assert");;
+module.exports = require("assert");
 
 /***/ }),
 
@@ -13661,7 +13658,7 @@ module.exports = require("assert");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("events");;
+module.exports = require("events");
 
 /***/ }),
 
@@ -13669,7 +13666,7 @@ module.exports = require("events");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("fs");;
+module.exports = require("fs");
 
 /***/ }),
 
@@ -13677,7 +13674,7 @@ module.exports = require("fs");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("http");;
+module.exports = require("http");
 
 /***/ }),
 
@@ -13685,7 +13682,7 @@ module.exports = require("http");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("https");;
+module.exports = require("https");
 
 /***/ }),
 
@@ -13693,7 +13690,7 @@ module.exports = require("https");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("net");;
+module.exports = require("net");
 
 /***/ }),
 
@@ -13701,7 +13698,7 @@ module.exports = require("net");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("os");;
+module.exports = require("os");
 
 /***/ }),
 
@@ -13709,7 +13706,7 @@ module.exports = require("os");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("path");;
+module.exports = require("path");
 
 /***/ }),
 
@@ -13717,7 +13714,7 @@ module.exports = require("path");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("stream");;
+module.exports = require("stream");
 
 /***/ }),
 
@@ -13725,7 +13722,7 @@ module.exports = require("stream");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("tls");;
+module.exports = require("tls");
 
 /***/ }),
 
@@ -13733,7 +13730,7 @@ module.exports = require("tls");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("tty");;
+module.exports = require("tty");
 
 /***/ }),
 
@@ -13741,7 +13738,7 @@ module.exports = require("tty");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("url");;
+module.exports = require("url");
 
 /***/ }),
 
@@ -13749,7 +13746,7 @@ module.exports = require("url");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("util");;
+module.exports = require("util");
 
 /***/ }),
 
@@ -13757,7 +13754,7 @@ module.exports = require("util");;
 /***/ ((module) => {
 
 "use strict";
-module.exports = require("zlib");;
+module.exports = require("zlib");
 
 /***/ })
 
@@ -13796,7 +13793,9 @@ module.exports = require("zlib");;
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat */
 /******/ 	
-/******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";/************************************************************************/
+/******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
+/******/ 	
+/************************************************************************/
 /******/ 	
 /******/ 	// startup
 /******/ 	// Load entry module and return exports

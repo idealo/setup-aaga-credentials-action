@@ -20,8 +20,7 @@ async function retrieveCredentials(): Promise<CredentialProcessOutput> {
 
   const mtlsOptions = {
     cert: process.env.AAGA_MTLS_CERTIFICATE,
-    key: process.env.AAGA_MTLS_KEY,
-    ca: process.env.AAGA_MTLS_CA
+    key: process.env.AAGA_MTLS_KEY
   }
   const mtlsOptionsValid = !Object.values(mtlsOptions).some(
     value => value == undefined

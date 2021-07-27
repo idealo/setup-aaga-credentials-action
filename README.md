@@ -79,7 +79,6 @@ However, credentials retrieved via this process can only be valid for a maximum 
   uses: idealo/setup-aaga-credentials-action@v1
   with:
     endpoint: <ENDPOINT-FROM-STACK-OUTPUT>
-    ca-certificate: ${{ secrets.AAGA_MTLS_CA }}
     client-certificate: ${{ secrets.AAGA_MTLS_CERTIFICATE }}
     client-key: ${{ secrets.AAGA_MTLS_KEY }}
 - name: Assume deployment role
@@ -130,7 +129,6 @@ In order to have access for creating credentials, each action that may access AW
 - run: aws sts get-caller-identity --region eu-central-1
   env:
     GITHUB_TOKEN: ${{github.token}}
-    AAGA_MTLS_CA: ${{ secrets.AAGA_MTLS_CA }}
     AAGA_MTLS_CERTIFICATE: ${{ secrets.AAGA_MTLS_CERTIFICATE }}
     AAGA_MTLS_KEY: ${{ secrets.AAGA_MTLS_KEY }}
 ```
