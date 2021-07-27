@@ -38,5 +38,7 @@ jobs:
       - name: Tag version series
         if: steps.semantic.outputs.new_release_published == 'true'
         run: |
+          git config --global user.name 'github-actions[bot]'
+          git config --global user.email 'github-actions[bot]@users.noreply.github.com'
           git tag -fa v${{ steps.semantic.outputs.new_release_major_version }} -m "Update v${{ steps.semantic.outputs.new_release_major_version }} tag"
           git push origin v${{ steps.semantic.outputs.new_release_major_version }} --force
