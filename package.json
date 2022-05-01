@@ -23,7 +23,7 @@
   "author": "Heiko Rothe <heiko.rothe@idealo.de>",
   "license": "MIT",
   "dependencies": {
-    "@actions/core": "^1.6.0",
+    "@actions/core": "^1.7.0",
     "@actions/github": "^5.0.0",
     "@actions/io": "^1.1.1",
     "axios": "^0.26.0",
